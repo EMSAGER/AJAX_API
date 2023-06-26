@@ -15,6 +15,7 @@ const $searchForm = $("#search-form");
 async function getShowsByTerm(term) {
   let res = await axios.get("https://api.tvmaze.com/search/shows?q=`${term}`");
   //console.log(res.data);
+  console.log(term);
   let shows = res.data.map(result => {
       let show = result.show;
       return {
