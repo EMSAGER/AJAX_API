@@ -11,7 +11,7 @@ const $searchForm = $("#search-form");
  *    Each show object should contain exactly: {id, name, summary, image}
  *    (if no image URL given by API, put in a default image URL)
  */
-
+console.log("hello!");
 async function getShowsByTerm(term) {
   let res = await axios.get("https://api.tvmaze.com/search/shows?q=`${term}`");
   //console.log(res.data);
@@ -64,8 +64,8 @@ function populateShows(shows) {
  */
 
 async function searchForShowAndDisplay() {
-  const term = $("#searchForm-term").val();
-  const shows = await getShowsByTerm(term);
+  const $term = $("#searchForm-term").val();
+  const shows = await getShowsByTerm($term);
 
   $episodesArea.hide();
   
@@ -79,7 +79,8 @@ $searchForm.on("submit", async function handleSearch(e) {
   if(!term) return;
 
   let shows = await searchForShowAndDisplay(term);
-  populateShows(shows);
+  console.log(shows);
+  // populateShows(shows);
 });
 
 
