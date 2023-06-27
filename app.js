@@ -1,5 +1,3 @@
-"use strict";
-
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-area");
 const $searchForm = $("#search-form");
@@ -11,41 +9,40 @@ const $searchForm = $("#search-form");
  *    Each show object should contain exactly: {id, name, summary, image}
  *    (if no image URL given by API, put in a default image URL)
  */
-console.log("hello!");
-async function getShowsByTerm(term) {
+//console.log("test!1");
+async function searchShows(term) {
   let res = await axios.get("https://api.tvmaze.com/search/shows?q=`${term}`");
   //console.log(res.data);
-  console.log(term);
+  
+  //console.log("test!2");
   let shows = res.data.map(result => {
       let show = result.show;
       return {
         id: show.id,
         name: show.name,
-        summary: show.summary
+        summary: show.summary,
       };
-
-  });
-console.log(shows);
+    });
+return shows;
   
 }
 
 /** Given list of shows, create markup for each and to DOM */
 
 function populateShows(shows) {
-  let $showsList = $("#shows-list");
+  const $showsList = $("#shows-list");
   $showsList.empty();
 
   for (let show of $showsList) {
     let $term = $(
         `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
-         <div class="media">
+         <div class="card" data-show-id="${show.id}">
            <img 
               src= "${show.image}" 
-              alt="" 
               class="w-25 mr-3">
-           <div class="media-body">
-             <h5 class="text-primary">${show.name}</h5>
-             <div><small>${show.summary}</small></div>
+           <div class="card-body">
+             <h5 class="card-title">${show.name}</h5>
+             <p class="card-text">${show.summary}</p>
              <button class="btn btn-outline-light btn-sm Show-getEpisodes">
                Episodes
              </button>
@@ -54,7 +51,8 @@ function populateShows(shows) {
        </div>
       `);
       console.log($term)
-    //$showsList.append($term); 
+    $showsList.append($term); 
+    console.log($showsList);
   }
 }
 
@@ -65,9 +63,9 @@ function populateShows(shows) {
 
 async function searchForShowAndDisplay() {
   const $term = $("#searchForm-term").val();
-  const shows = await getShowsByTerm($term);
+  const shows = await getShowsBySearch($term);
 
-  $episodesArea.hide();
+  console.log(shows);
   
   populateShows(shows);
 }
@@ -78,9 +76,11 @@ $searchForm.on("submit", async function handleSearch(e) {
   let term = $('#search-query').val();
   if(!term) return;
 
-  let shows = await searchForShowAndDisplay(term);
+  $episodesArea.hide();
+
+  let shows = await searchShows(term);
   console.log(shows);
-  // populateShows(shows);
+  populateShows(shows);
 });
 
 
