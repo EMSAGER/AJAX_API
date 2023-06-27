@@ -1,3 +1,4 @@
+"use strict";
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-area");
 const $searchForm = $("#search-form");
@@ -10,22 +11,25 @@ const $searchForm = $("#search-form");
  *    (if no image URL given by API, put in a default image URL)
  */
 //console.log("test!1");
-async function searchShows(term) {
-  let res = await axios.get("https://api.tvmaze.com/search/shows?q=`${term}`");
+async function searchShows(query) {
+  let res = await axios.get(`https://api.tvmaze.com/search/shows?q=${query}`);
   //console.log(res.data);
   
-  //console.log("test!2");
   let shows = res.data.map(result => {
       let show = result.show;
       return {
         id: show.id,
         name: show.name,
         summary: show.summary,
+        image: show.image,
       };
+    
     });
+    //console.log("test2")
+    //console.log(shows);
 return shows;
   
-}
+  }
 
 /** Given list of shows, create markup for each and to DOM */
 
@@ -36,7 +40,7 @@ function populateShows(shows) {
   for (let show of $showsList) {
     let $term = $(
         `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
-         <div class="card" data-show-id="${show.id}">
+         <div class="media" data-show-id="${show.id}">
            <img 
               src= "${show.image}" 
               class="w-25 mr-3">
@@ -50,9 +54,10 @@ function populateShows(shows) {
          </div>  
        </div>
       `);
-      console.log($term)
     $showsList.append($term); 
-    console.log($showsList);
+    
+    //console.log($showsList);
+    //console.log("test3");
   }
 }
 
@@ -65,22 +70,24 @@ async function searchForShowAndDisplay() {
   const $term = $("#searchForm-term").val();
   const shows = await getShowsBySearch($term);
 
-  console.log(shows);
   
   populateShows(shows);
+  console.log("test4");
 }
 
 $searchForm.on("submit", async function handleSearch(e) {
   e.preventDefault();
 
-  let term = $('#search-query').val();
-  if(!term) return;
+  let query = $('#search-query').val();
+  if(!query) return;
 
   $episodesArea.hide();
 
-  let shows = await searchShows(term);
-  console.log(shows);
+  let shows = await searchShows(query);
+  //console.log(shows);
+  //console.log('A');
   populateShows(shows);
+  //console.log("test5");
 });
 
 
