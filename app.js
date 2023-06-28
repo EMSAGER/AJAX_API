@@ -1,4 +1,5 @@
 "use strict";
+
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-area");
 const $searchForm = $("#search-form");
@@ -25,25 +26,22 @@ async function searchShows(query) {
       };
     
     });
-    //console.log("test2")
-    //console.log(shows);
+    console.log("test2");
+    console.log(shows);
 return shows;
   
   }
 
 /** Given list of shows, create markup for each and to DOM */
 
-function populateShows(shows) {
+function populateShows(show) {
   const $showsList = $("#shows-list");
   $showsList.empty();
 
   for (let show of $showsList) {
-    let $term = $(
+    let showItem = $(
         `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
-         <div class="media" data-show-id="${show.id}">
-           <img 
-              src= "${show.image}" 
-              class="w-25 mr-3">
+         <div class="card" data-show-id="${show.id}">
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
@@ -54,11 +52,11 @@ function populateShows(shows) {
          </div>  
        </div>
       `);
-    $showsList.append($term); 
+    $showsList.append(showItem); 
     
-    //console.log($showsList);
-    //console.log("test3");
-  }
+    console.log($showsList);
+    console.log("test3");
+  };
 }
 
 
@@ -67,11 +65,11 @@ function populateShows(shows) {
  */
 
 async function searchForShowAndDisplay() {
-  const $term = $("#searchForm-term").val();
-  const shows = await getShowsBySearch($term);
+  let querys = $("#searchForm").val();
+  let show = await searchShows(querys);
 
   
-  populateShows(shows);
+  populateShows(show);
   console.log("test4");
 }
 
@@ -83,11 +81,11 @@ $searchForm.on("submit", async function handleSearch(e) {
 
   $episodesArea.hide();
 
-  let shows = await searchShows(query);
-  //console.log(shows);
-  //console.log('A');
-  populateShows(shows);
-  //console.log("test5");
+  let show = await searchForShowAndDisplay(query);
+  console.log(show);
+  console.log('A');
+  populateShows(show);
+  console.log("test5");
 });
 
 
