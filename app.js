@@ -3,7 +3,8 @@
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-area");
 const $searchForm = $("#search-form");
-
+const noTVImage = "https://images.pexels.com/photos/17233395/pexels-photo-17233395/free-photo-of-a-retro-television-with-flowers.jpeg";
+//const $noTVImage = $("<img src=https://images.pexels.com/photos/17233395/pexels-photo-17233395/free-photo-of-a-retro-television-with-flowers.jpeg");
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -22,39 +23,38 @@ async function searchShows(query) {
         id: show.id,
         name: show.name,
         summary: show.summary,
-        image: show.image,
+        image: show.image ? show.image.medium : noTVImage,
       };
-    
     });
     console.log("test2");
     console.log(shows);
-return shows;
-  
-  }
+  return shows;
+}
 
 /** Given list of shows, create markup for each and to DOM */
 
-function populateShows(show) {
-  const $showsList = $("#shows-list");
-  $showsList.empty();
+function populateShows() {
+  let showsList = $("#shows-list");
+  showsList.empty();
 
-  for (let show of $showsList) {
+  for (let show of showsList) {
     let showItem = $(
-        `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
+        `<div data-show-id="${show.id}" class="col-md-12 col-lg-6 mb-4" id="Show">
          <div class="card" data-show-id="${show.id}">
+         <div class="card-img-top" src="${show.image}"> 
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
-             <button class="btn btn-outline-light btn-sm Show-getEpisodes">
+             <button class="btn btn-outline-light btn-sm" id="Show-getEpisodes">
                Episodes
              </button>
            </div>
          </div>  
        </div>
       `);
-    $showsList.append(showItem); 
+    showsList.append(showItem); 
     
-    console.log($showsList);
+    console.log(showsList);
     console.log("test3");
   };
 }
@@ -69,7 +69,8 @@ async function searchForShowAndDisplay() {
   let show = await searchShows(querys);
 
   
-  populateShows(show);
+ //populateShows(show);
+ console.log(show);
   console.log("test4");
 }
 
@@ -82,7 +83,7 @@ $searchForm.on("submit", async function handleSearch(e) {
   $episodesArea.hide();
 
   let show = await searchForShowAndDisplay(query);
-  console.log(show);
+  //console.log(show);
   console.log('A');
   populateShows(show);
   console.log("test5");
