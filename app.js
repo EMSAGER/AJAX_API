@@ -42,19 +42,19 @@ function populateShows(shows) {
   //console.log(shows);
   //console.log($showsList);
   for (let show of shows) {
-    //console.log(show.id);
-    //console.log(show.image);
-    //console.log(show.name);
-   // console.log(show.summary);
+  //   console.log(show.id);
+  //   console.log(show.image);
+  //   console.log(show.name);
+  //  console.log(show.summary);
     let showItem = $(
-        `<div data-show-id="${show.id}" class="col-md-12 col-lg-6 mb-4" id="Show">
+        `<div data-show-id="${show.id}" class="col-md-12 col-lg-6 mb-4 SHOW">
          <div class="card" data-show-id="${show.id}">
          <img class="card-img-top" src="${show.image}"> 
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
 
-             <button class="btn btn-outline-light btn-sm" id="Show-getEpisodes">
+             <button class="btn btn-outline-light btn-sm get-episodes">
                Episodes
              </button>
            </div>
@@ -99,7 +99,7 @@ $searchForm.on("submit", async function handleSearch(e) {
   //console.log(show);
   // console.log('A');
   populateShows(shows);
-  // console.log("test5");
+  //console.log("test5");
 });
 
 
@@ -107,11 +107,16 @@ $searchForm.on("submit", async function handleSearch(e) {
  *      { id, name, season, number }
  */
 
-async function getEpisodesOfShow(id) { 
-  let res = await axios.get(`https://api.tvmaze.com/search/shows:${id}`);
-  let episodes = res.data.map(result => {
-    let episode = result.episode;
-    console.log(episodes);
+async function getEpisodesOfShow(showID) { 
+  let res = await axios.get(`https://api.tvmaze.com/shows/${showID}/episodes`);
+
+  let episodes = res.data.map(episode => {
+  
+    console.log(episode);
+    console.log(episode.id);
+    console.log(episode.name);
+    console.log(episode.season);
+    console.log(episode.number);
     return {
       id: episode.id,
       name: episode.name,
@@ -129,19 +134,22 @@ function populateEpisodes(episodes) {
   
   for(let episode of episodes){
     let episodeItem = $(
-      `<li class="list-group-item" data-episode-id>${episode.id}</li>
-      <li class="list-group-item">${episode.name}</li>
-      <li class="list-group-item">${episode.season}</li>
-      <li class="list-group-item">${episode.number}</li>
+      `<li class="list-group-item">${episode.name}(season ${episode.season}, episode ${episode.number})</li>
       `);
       $episodesList.append(episodeItem);
-      $episodesArea.append($episodesList);
+    };
       console.log(episodeItem);
       console.log($episodesList);
-  };
+    $("#episodes-area").show();
 }
-$("#Show-getEpisodes").on("click", async function handleEpisodeSearch(){
-  let showID = $('#search-query').
+$("#shows-list").on("click", ".get-episodes", async function handleEpisodeSearch(e){
+  //let showID = $(e.target);
+  //console.log(showID +' was clicked!');
+  
+  let showID = $(e.target).closest(".SHOW").data("show-id");
+  // let episodes = await getEpisodesOfShow(showID);
 
-  let 
-})
+  console.log(showID);
+  //console.log(episodes);
+  // populateEpisodes(episodes);
+});
