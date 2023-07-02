@@ -1,7 +1,7 @@
 "use strict";
 
 const $showsList = $("#shows-list");
-const $episodesArea = $("#episodes-area");
+const $episodesArea = $(".episodes-area");
 const $searchForm = $("#search-form");
 const $episodesList = $("#episodes-list")
 const noTVImage = "https://images.pexels.com/photos/17233395/pexels-photo-17233395/free-photo-of-a-retro-television-with-flowers.jpeg";
@@ -112,11 +112,11 @@ async function getEpisodesOfShow(showID) {
 
   let episodes = res.data.map(episode => {
   
-    console.log(episode);
-    console.log(episode.id);
-    console.log(episode.name);
-    console.log(episode.season);
-    console.log(episode.number);
+    // console.log(episode);
+    // console.log(episode.id);
+    // console.log(episode.name);
+    // console.log(episode.season);
+    // console.log(episode.number);
     return {
       id: episode.id,
       name: episode.name,
@@ -124,32 +124,39 @@ async function getEpisodesOfShow(showID) {
       number: episode.number
     };
   });
-  console.log(episodes);
+  //console.log(episodes);
   return episodes;
 }
 /** Write a clear docstring for this function... */
 
 function populateEpisodes(episodes) { 
-  $episodesList.empty();
+  //console.log($episodesList)
+  //$episodesList.empty();
   
   for(let episode of episodes){
     let episodeItem = $(
-      `<li class="list-group-item">${episode.name}(season ${episode.season}, episode ${episode.number})</li>
+      `<li>
+      ${episode.name}
+      (season ${episode.season}, episode ${episode.number})
+      </li>
       `);
+      //console.log(episodeItem);
       $episodesList.append(episodeItem);
     };
-      console.log(episodeItem);
-      console.log($episodesList);
-    $("#episodes-area").show();
+      
+     // console.log($episodesList);
+    $(".episodes-area").show();
 }
+
+
 $("#shows-list").on("click", ".get-episodes", async function handleEpisodeSearch(e){
   //let showID = $(e.target);
   //console.log(showID +' was clicked!');
   
   let showID = $(e.target).closest(".SHOW").data("show-id");
-  // let episodes = await getEpisodesOfShow(showID);
+  let episodes = await getEpisodesOfShow(showID);
 
-  console.log(showID);
+  //console.log(showID);
   //console.log(episodes);
-  // populateEpisodes(episodes);
+  populateEpisodes(episodes);
 });
