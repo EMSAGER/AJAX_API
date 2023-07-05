@@ -1,6 +1,6 @@
 "use strict";
 
-const $showsList = $("#shows-list");
+const showsList = $("#shows-list");
 const $episodesArea = $(".episodes-area");
 const $searchForm = $("#search-form");
 const $episodesList = $("#episodes-list")
@@ -61,7 +61,7 @@ function populateShows(shows) {
          </div>  
        </div>
       `);
-    $showsList.append(showItem); 
+    showsList.append(showItem); 
     
     // console.log($showsList);
     // console.log("test3");
