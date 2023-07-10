@@ -38,7 +38,7 @@ async function searchShows(query) {
 /** Given list of shows, create markup for each and to DOM */
 
 function populateShows(shows) {
-  $showsList.empty();
+  showsList.empty();
   //console.log(shows);
   //console.log($showsList);
   for (let show of shows) {
